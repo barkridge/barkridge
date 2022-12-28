@@ -4,6 +4,8 @@ declare type Props = {
 
 export default function Page({version}: Props) {
   return (
-    <p>Welcome to Laravel {version}</p>
+    <div className="p-4">
+      <p>Welcome to Laravel {version}</p>
+    </div>
   )
 }
