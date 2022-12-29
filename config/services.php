@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'firebase' => [
+        'config' => env('FIREBASE_CONFIG'),
+        'service_account' => env('FIREBASE_SERVICE_ACCOUNT'),
+    ]
+
 ];
