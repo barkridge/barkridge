@@ -2,8 +2,8 @@
 
 namespace App\Nova;
 
+use App\Services\HelperService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
@@ -30,7 +30,7 @@ class Photo extends Resource
                 ->creationRules('unique:photos,slug')
                 ->updateRules('unique:photos,slug,{{resourceId}}')
                 ->default(function (): string {
-                    return Str::random(8);
+                    return resolve(HelperService::class)->generateSlug();
                 }),
 
             Image::make('File')
@@ -55,7 +55,9 @@ class Photo extends Resource
 
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            \App\Nova\Metrics\Photo\PhotosPerDay::make(),
+        ];
     }
 
     public function filters(NovaRequest $request)

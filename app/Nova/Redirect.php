@@ -2,8 +2,8 @@
 
 namespace App\Nova;
 
+use App\Services\HelperService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -29,7 +29,7 @@ class Redirect extends Resource
                 ->creationRules('unique:redirects,slug')
                 ->updateRules('unique:redirects,slug,{{resourceId}}')
                 ->default(function (): string {
-                    return Str::random(8);
+                    return resolve(HelperService::class)->generateSlug();
                 }),
 
             Text::make('URL')
@@ -43,7 +43,9 @@ class Redirect extends Resource
 
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            \App\Nova\Metrics\Redirect\RedirectsPerDay::make(),
+        ];
     }
 
     public function filters(NovaRequest $request)
